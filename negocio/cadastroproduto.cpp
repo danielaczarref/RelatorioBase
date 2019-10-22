@@ -38,16 +38,67 @@ bool CadastroProduto::inserirDescricaoProduto(const QString &value)
     //descricao = value;
 }
 
-double CadastroProduto::getValorProduto() const
+QList<Produto *> CadastroProduto::getInformacoesProduto()
+{
+    QList<Produto*> produtos;
+    QSqlQuery query;
+    query.prepare("select produto.id_produto, produto.produto, produto.valor,"
+                  " produto.id_categoria, categoria.categoria "
+                  "from produto, categoria "
+                  "where produto.id_categoria = categoria.id_categoria;");
+    query.exec();
+    while(query.next())
+    {
+        Produto* produto = new Produto;
+        produto->setIdProduto(query.value("id_produto").toLongLong());
+        produto->setDescProduto(query.value("produto").toString());
+        produto->setValorProduto(query.value("valor").toDouble());
+
+        Categoria* categoria = new Categoria;
+        categoria->setIdCategoria(query.value("id_categoria").toLongLong());
+        categoria->setDescCategoria(query.value("categoria").toString());
+
+        produto->setCategoria(categoria);
+
+//        produto->setCategoria(categoria);
+
+        produtos << produto;
+    }
+
+
+//    foreach (Produto* prod, produtos) {
+//        qDebug() << prod->getCategoria()->idCategoria();
+//    }
+
+    return produtos;
+}
+
+double CadastroProduto::getValorProduto(int idProduto) const
 {
     QSqlQuery query;
-    query.prepare("SELECT valor FROM produto"); //lidar com id depois
+    query.prepare("SELECT valor FROM produto where id_produto = (:idProduto);");
+    query.bindValue(":idProduto", idProduto);
     query.exec();
+
+    double valor;
+    if(query.next())
+        valor = query.value("valor").toDouble();
+
+    return valor;
     //return valor;
 }
 
-bool CadastroProduto::defineValorProduto(QString preco)
+bool CadastroProduto::defineValorProduto(double preco)
 {
+    QSqlQuery query;
+    query.prepare("INSERT INTO produto(valor) values (:preco);");
+    query.bindValue(":preco", preco);
+    query.exec();
+
+    if (!query.exec()){
+        return false;
+    }
+    return true;
 //    double valor = preco.toDouble();
 //    QSqlQuery query;
 //    query.prepare("INSERT INTO produto(valor) values (:preco);");

@@ -3,6 +3,8 @@
 #include <QObject>
 #include <QtSql/QSqlDatabase>
 #include <QSqlQuery>
+#include "dominio/estoque.h"
+#include "negocio/filtro.h"
 
 
 
@@ -14,9 +16,14 @@ public:
     //CadastroEstoque();
 
     int getIdProdutoEstoque() const;
+    QList<Estoque*> getInformacoesEstoque(QString sfilial, QString sproduto);
+
     int getIdFilialEstoque() const;
-    QString getBasedoProdutoEstoque(QString descProduto, QString descFilial) const;
+    double getBasedoProdutoEstoque(int idProduto, int idFilial) const;
     bool defineBasedoProdutoEstoque(double value);
+
+    QList<Estoque*> recuperarEstoques(Filtro* filtro);
+
     QSqlDatabase db;
 
 private:

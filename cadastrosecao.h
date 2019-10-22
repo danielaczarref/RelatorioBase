@@ -3,6 +3,7 @@
 #include <QObject>
 #include <QtSql/QSqlDatabase>
 #include <QSqlQuery>
+#include "dominio/secao.h"
 
 
 class CadastroSecao : public QObject
@@ -12,15 +13,19 @@ public:
     explicit CadastroSecao(QObject *parent = nullptr);
    // CadastroSecao();
     int getIdSecao() const;
+    QList<Secao*> getInformacoesSecao();
 
-    QString getDescricaoSecao() const;
+    QString getDescricaoSecao(int id) const;
     bool inserirDescricaoSecao(const QString &value);
     int BuscaIdPelaDescricaoDaSecao (const QString &RetornaIdPelaDescricaoDaSecao);
+
+    QList<QString> getDescDepartamento() const;
 
 private:
     int idSecao;
     QString descricao;
     QString RetornaIdPelaDescricaoDaSecao;
+    QList<QString> descDepartamento;
 
 };
 

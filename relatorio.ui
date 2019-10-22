@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>866</width>
-    <height>515</height>
+    <width>985</width>
+    <height>601</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,23 +16,6 @@
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="1" column="0">
     <layout class="QGridLayout" name="gridLayout">
-     <item row="1" column="0">
-      <widget class="QPushButton" name="pbFiltrar">
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>  Filtrar
- Pesquisa</string>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>../recursos/filtro.png</normaloff>../recursos/filtro.png</iconset>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
       <widget class="QPushButton" name="pbCadastrar">
        <property name="font">
@@ -50,6 +33,35 @@
        </property>
       </widget>
      </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="pbFiltrar">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>  Filtrar
+ Pesquisa</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../recursos/filtro.png</normaloff>../recursos/filtro.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QPushButton" name="pbVoltar">
+       <property name="text">
+        <string>  Voltar
+   Tela</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../recursos/Seta-Azul-Esquerda.png</normaloff>../recursos/Seta-Azul-Esquerda.png</iconset>
+       </property>
+      </widget>
+     </item>
      <item row="3" column="0">
       <spacer name="verticalSpacer">
        <property name="orientation">
@@ -58,26 +70,10 @@
        <property name="sizeHint" stdset="0">
         <size>
          <width>20</width>
-         <height>58</height>
+         <height>40</height>
         </size>
        </property>
       </spacer>
-     </item>
-     <item row="2" column="0">
-      <widget class="QPushButton" name="pbLimpar">
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>  Limpar</string>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>../recursos/limpar.png</normaloff>../recursos/limpar.png</iconset>
-       </property>
-      </widget>
      </item>
     </layout>
    </item>
@@ -90,34 +86,114 @@
       <layout class="QGridLayout" name="gridLayout_3">
        <item row="0" column="0">
         <widget class="QTableWidget" name="tableWidget">
+         <property name="editTriggers">
+          <set>QAbstractItemView::NoEditTriggers</set>
+         </property>
+         <attribute name="verticalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
          <column>
           <property name="text">
-           <string>  Categoria   </string>
+           <string>  ID   </string>
           </property>
           <property name="font">
            <font>
             <pointsize>14</pointsize>
            </font>
+          </property>
+          <property name="textAlignment">
+           <set>AlignCenter</set>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>  Produto   </string>
+           <string>Filial</string>
           </property>
           <property name="font">
            <font>
             <pointsize>14</pointsize>
            </font>
+          </property>
+          <property name="textAlignment">
+           <set>AlignCenter</set>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>  Base   </string>
+           <string>ID</string>
           </property>
           <property name="font">
            <font>
             <pointsize>14</pointsize>
            </font>
+          </property>
+          <property name="textAlignment">
+           <set>AlignCenter</set>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Produto</string>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="textAlignment">
+           <set>AlignCenter</set>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Valor</string>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="textAlignment">
+           <set>AlignCenter</set>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Base</string>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="textAlignment">
+           <set>AlignCenter</set>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>ID</string>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="textAlignment">
+           <set>AlignCenter</set>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Categoria</string>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="textAlignment">
+           <set>AlignCenter</set>
           </property>
          </column>
         </widget>

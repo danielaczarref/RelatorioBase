@@ -18,29 +18,50 @@ public:
     ~Cadastro();
     QSqlDatabase db;
 
+
+    int idFilial       = 0;
+    int idDepartamento = 0;
+    int idSecao        = 0;
+    int idCategoria    = 0;
+    int idProduto      = 0;
+
+    QString getRetornalnFilial() const;
+
+    QString getRetornalnProduto() const;
+
 private slots:
     void onbtFilialclicked();
     void onbtDepartamentoclicked();
     void onbtCategoriaclicked();
     void onbtProdutoclicked();
-    void onbtBaseclicked();
     void onbtSalvarclicked();
     void onbtLimparclicked();
     void onlnFilialinformed();
     void onlnDepartamentoinformed();
     void onlnCategoriainformed();
     void onlnProdutoinformed();
-    void chamaBase();
-    void onlnBaseinformed();
     bool validaString(QString s);
 //    bool validaDouble (QString s);
     bool VerificaSeENumero (QString s);
+    bool verificaCampos();
+
+    void onlnSecaoInformed();
+
+    bool isFilialEmpty();
+    bool isDepartamentoEmpty();
+    bool isSecaoEmpty();
+    bool isCategoriaEmpty();
+    bool isProdutoEmpty();
+
 
 private:
     Ui::Cadastro *ui;
     void configuracaoInicial();
+    QString RetornalnFilial;
+    QString RetornalnProduto;
 
     void setConnects();
+
 };
 
 #endif // CADASTRO_H

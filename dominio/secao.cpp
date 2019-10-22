@@ -24,3 +24,23 @@ void Secao::setDescSecao(const QString &value)
 {
     descSecao = value;
 }
+
+long long Secao::getIdDepartamento() const
+{
+    return idDepartamento;
+}
+
+void Secao::setIdDepartamento(long long value)
+{
+    idDepartamento = value;
+}
+
+QString Secao::getDescDepartamento() const
+{
+    return descDepartamento;
+}
+
+void Secao::setDescDepartamento(const QString &value)
+{
+    descDepartamento = value;
+}

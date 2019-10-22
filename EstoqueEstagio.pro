@@ -42,7 +42,15 @@ SOURCES += \
     dominio/departamento.cpp \
     dominio/secao.cpp \
     dominio/categoria.cpp \
-    dominio/produto.cpp
+    dominio/produto.cpp \
+    dominio/estoque.cpp \
+    listdepartamento.cpp \
+    listsecao.cpp \
+    listcategoria.cpp \
+    listproduto.cpp \
+    listrelatoriobase.cpp \
+    dao/estoquedao.cpp \
+    negocio/filtro.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -61,12 +69,25 @@ HEADERS += \
     dominio/departamento.h \
     dominio/secao.h \
     dominio/categoria.h \
-    dominio/produto.h
+    dominio/produto.h \
+    dominio/estoque.h \
+    listdepartamento.h \
+    listsecao.h \
+    listcategoria.h \
+    listproduto.h \
+    listrelatoriobase.h \
+    dao/estoquedao.h \
+    negocio/filtro.h
 
 FORMS += \
         mainwindow.ui \
     cadastro.ui \
     relatorio.ui \
-    listfilial.ui
+    listfilial.ui \
+    listdepartamento.ui \
+    listsecao.ui \
+    listcategoria.ui \
+    listproduto.ui \
+    listrelatoriobase.ui
 
 DISTFILES +=

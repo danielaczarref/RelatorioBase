@@ -3,6 +3,7 @@
 #include <QObject>
 #include <QtSql/QSqlDatabase>
 #include <QSqlQuery>
+#include "dominio/categoria.h"
 
 
 class CadastroCategoria : public QObject
@@ -15,16 +16,21 @@ public:
     QString getDescricaoCategoria(int id) const;
 //    void setDescricao(const QString &value);
     bool salvarDescricaoCategoria(QString descricao);
+    QList<Categoria*> getInformacoesCategoria();
 
-    int getIdCategoria() const;
+
+    int getIdCategoria(int idProduto) const;
     QSqlDatabase db;
 
     int RetornaIdAtravesdaDescricao (const QString &UsadaParaBuscarIdPelaDescricao);
+
+    QString getDescSecao() const;
 
 private:
     int id;
     QString descricao;
     QString UsadaParaBuscarIdPelaDescricao;
+    QString descSecao;
 };
 
 #endif // CADASTROCATEGORIA_H

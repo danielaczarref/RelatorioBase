@@ -15,9 +15,17 @@ public:
     QString getDescCategoria() const;
     void setDescCategoria(const QString &value);
 
+    QString getDescSecao() const;
+    void setDescSecao(const QString &value);
+
+    long long getIdSecao() const;
+    void setIdSecao(long long value);
+
 private:
     long long idCategoria;
     QString descCategoria;
+    QString descSecao;
+    long long idSecao;
 };
 
 #endif // CATEGORIA_H

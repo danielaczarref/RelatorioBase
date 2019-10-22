@@ -20,6 +20,14 @@
 #include "negocio/cadastroestoque.h"
 #include <stdlib.h>
 #include "listfilial.h"
+#include "listdepartamento.h"
+#include <QLineEdit>
+#include "listsecao.h"
+#include "listcategoria.h"
+#include "listproduto.h"
+#include "listrelatoriobase.h"
+#include "cadastrosecao.h"
+#include "negocio/filtro.h"
 
 
 using namespace std;
@@ -38,6 +46,7 @@ Cadastro::Cadastro(QWidget *parent) : QWidget(parent), ui(new Ui::Cadastro)
     db.setPassword("123456");
     db.setPort(5432);
     db.open();
+
 }
 
 Cadastro::~Cadastro()
@@ -55,36 +64,23 @@ void Cadastro::onbtFilialclicked()
 
 void Cadastro::onbtDepartamentoclicked()
 {
+    listDepartamento* listDep = new listDepartamento;
+    listDep->show();
     qDebug() << "Log: usuário pesquisou departamento";
 }
 
 void Cadastro::onbtCategoriaclicked()
 {
+    ListCategoria* listCategoria = new ListCategoria;
+    listCategoria->show();
     qDebug() << "Log: usuário pesquisou categoria";
 }
 
 void Cadastro::onbtProdutoclicked()
 {
+    ListProduto* listProduto = new ListProduto;
+    listProduto->show();
     qDebug() << "Log: usuário pesquisou produto";
-}
-
-void Cadastro::onbtBaseclicked()
-{
-    qDebug() << "Log: usuário pesquisou base";
-}
-
-void Cadastro::onbtSalvarclicked()
-{
-    qDebug() << "Log: usuário salvou a busca/os dados";
-    //QMessageBox::about(this, "Alerta!", "Dados salvos com sucesso!");
-//    ui->stRelatorio->setCurrentIndex(1);
-
-    CadastroBase* cadastroBase = new CadastroBase;
-    cadastroBase->setCategoria(ui->lnCategoria->text());
-    cadastroBase->setProduto(ui->lnProduto->text());
-    cadastroBase->setBase(ui->lnBase->text());
-
-//    salva
 }
 
 void Cadastro::onbtLimparclicked()
@@ -105,6 +101,8 @@ void Cadastro::onlnFilialinformed()
         qDebug() << "Log: usuário informou id da filial desejada";
         CadastroFilial* cadastroFilial = new CadastroFilial;
         QString id = ui->lnFilial->text();
+        idFilial = id.toInt();
+        qDebug() << "id filial ANTES: " << idFilial;
         QString descricao = cadastroFilial->getDescricaoFilial(ui->lnFilial->text().toInt());
         ui->lnFilial->setText(id + " - " + descricao);
     } else {
@@ -112,11 +110,14 @@ void Cadastro::onlnFilialinformed()
             CadastroFilial* cadastroFilial = new CadastroFilial;
            // cadastroFilial->RetornaIdDaFilial(descFilial);
             qDebug() << "Entrei aqui";
-            int idFilial = cadastroFilial->RetornaIdDaFilial(descFilial);
+            idFilial = cadastroFilial->RetornaIdDaFilial(descFilial);
             qDebug() << "entrei aqui tbm kkk bjs";
             ui->lnFilial->setText(QString::number(idFilial) + " - " + descFilial);
             qDebug() << "Log: usuário informou filial com sucesso!";
-        }
+        } 
+
+//    ui->lnCategoria->setProperty("id", idCategoria);
+//    long long id = ui->lnCategoria->property("id");
 
 }
 
@@ -132,6 +133,7 @@ void Cadastro::onlnDepartamentoinformed()
         qDebug() << "Log: usuário informou número do departamento desejado";
         CadastroDepartamento* cadastroDepartmento = new CadastroDepartamento;
         QString id = ui->lnDepartamento->text();
+        idDepartamento = id.toInt();
         QString descricao = cadastroDepartmento->getDescricaoDepartamento(ui->lnDepartamento->text().toInt());
         qDebug() << descricao;
         ui->lnDepartamento->setText(id + " - " + descricao);
@@ -139,9 +141,97 @@ void Cadastro::onlnDepartamentoinformed()
     }else {
         QString descDepartamento = ui->lnDepartamento->text().toUpper();
         CadastroDepartamento* cadastroDepartamento = new CadastroDepartamento;
-        int idDepartamento = cadastroDepartamento->buscaIdDoDepartamento(descDepartamento);
+        idDepartamento = cadastroDepartamento->buscaIdDoDepartamento(descDepartamento);
         ui->lnDepartamento->setText(QString::number(idDepartamento) + " - " + descDepartamento);
         qDebug() << "Log: usuário informou departamento com sucesso!";
+    }
+}
+
+void Cadastro::onlnSecaoInformed()
+{
+    if (!(validaString(ui->lnSecao->text()))){
+        QMessageBox::about(this, "Alerta!", "Uso de caracteres inválido!");
+        qDebug() << "Log: usuário informou nome para seção inválido";
+    } else if (VerificaSeENumero(ui->lnSecao->text())){
+        qDebug() << "Log: usuário informou número para seção desejada";
+        CadastroSecao* cadastroSecao = new CadastroSecao;
+        QString id = ui->lnSecao->text();
+        idSecao = id.toInt();
+        qDebug() << "id secao ANTES: " << idSecao;
+        QString descricao = cadastroSecao->getDescricaoSecao(ui->lnSecao->text().toInt());
+        qDebug() << descricao;
+        ui->lnSecao->setText(id + " - " + descricao);
+
+    } else {
+        QString descSecao = ui->lnSecao->text().toUpper();
+        CadastroSecao* cadastroSecao = new CadastroSecao;
+        idSecao = cadastroSecao->BuscaIdPelaDescricaoDaSecao(descSecao);
+        ui->lnSecao->setText(QString::number(idSecao) + " - " + descSecao);
+        qDebug() << "Log: usuário informou seção com suceso!";
+    }
+}
+
+bool Cadastro::isFilialEmpty()
+{
+    if (ui->lnFilial->text().isEmpty()){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool Cadastro::isDepartamentoEmpty()
+{
+    if (ui->lnDepartamento->text().isEmpty()){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool Cadastro::isSecaoEmpty()
+{
+    if (ui->lnSecao->text().isEmpty()){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool Cadastro::isCategoriaEmpty()
+{
+    if (ui->lnCategoria->text().isEmpty()){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool Cadastro::isProdutoEmpty()
+{
+    if (ui->lnProduto->text().isEmpty()){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+QString Cadastro::getRetornalnProduto() const
+{
+    QString descProduto;
+    if (!(ui->lnProduto->text().isEmpty())){
+        descProduto = ui->lnProduto->text();
+        return descProduto;
+    }
+
+}
+
+QString Cadastro::getRetornalnFilial() const
+{
+    QString descFilial;
+    if (!(ui->lnFilial->text().isEmpty())){
+        descFilial = ui->lnFilial->text();
+        return descFilial;
     }
 }
 
@@ -157,12 +247,13 @@ void Cadastro::onlnCategoriainformed()
         qDebug() << "Log: usuário informou id da categoria desejada";
         CadastroCategoria* cadastroCategoria = new CadastroCategoria;
         QString id = ui->lnCategoria->text();
+        idCategoria = id.toInt();
         QString identificacao = cadastroCategoria->getDescricaoCategoria(ui->lnCategoria->text().toInt());
         ui->lnCategoria->setText(id + " - " + identificacao);
     } else {
         QString descCategoria = ui->lnCategoria->text().toUpper();
         CadastroCategoria* cadastroCategoria = new CadastroCategoria;
-        int idCategoria = cadastroCategoria->RetornaIdAtravesdaDescricao(descCategoria);
+        idCategoria = cadastroCategoria->RetornaIdAtravesdaDescricao(descCategoria);
         ui->lnCategoria->setText(QString::number(idCategoria) + " - " + descCategoria);
         qDebug() << "Log: usuário informou categoria com sucesso!";
     }
@@ -180,12 +271,13 @@ void Cadastro::onlnProdutoinformed()
         qDebug() << "Log: usuário informou id do produto";
         CadastroProduto* cadastroProduto = new CadastroProduto;
         QString identificacao = ui->lnProduto->text();
+        idProduto = identificacao.toInt();
         QString descricaoProduto = cadastroProduto->getDescricaoProduto(ui->lnProduto->text().toInt());
         ui->lnProduto->setText(identificacao + " - " + descricaoProduto);
     } else {
         QString descProduto = ui->lnProduto->text().toUpper();
         CadastroProduto* cadastroProduto = new CadastroProduto;
-        int idProduto = cadastroProduto->RetornaIdDoProdutoPelaDescricao(descProduto);
+        idProduto = cadastroProduto->RetornaIdDoProdutoPelaDescricao(descProduto);
         ui->lnProduto->setText(QString::number(idProduto) + " - " + descProduto);
         QString descFilial = ui->lnFilial->text().toUpper();
 //        CadastroEstoque* cadastroEstoque = new CadastroEstoque;
@@ -196,28 +288,6 @@ void Cadastro::onlnProdutoinformed()
     }
 }
 
-void Cadastro::chamaBase()
-{
-    if (!(ui->lnProduto->text().isEmpty()) && (!(ui->lnFilial->text().isEmpty()))){
-        CadastroEstoque* cadastroEstoque = new CadastroEstoque;
-        QString base = cadastroEstoque->getBasedoProdutoEstoque(ui->lnProduto->text(), ui->lnFilial->text());
-        ui->lnBase->setText(base);
-    }
-}
-
-void Cadastro::onlnBaseinformed()
-{    
-    QLineEdit lnBase;
-    //lnBase.setValidator(new QDoubleValidator(0, 100, 2, this));
-    QString a = ui->lnBase->text();
-    if (ui->lnBase->text().isEmpty()){
-        QMessageBox::about(this, "Alerta!", "Por favor, preencha todos os campos!");
-        qDebug() << "Log: usuário não informou base";
-    }
-
-    qDebug() << a;
-
-}
 
 bool Cadastro::validaString(QString s)
 {
@@ -265,17 +335,108 @@ bool Cadastro::VerificaSeENumero(QString s)
     }
 }
 
+bool Cadastro::verificaCampos()
+{
+    if (ui->lnFilial->text().isEmpty() && ui->lnDepartamento->text().isEmpty() && ui->lnCategoria->text().isEmpty()
+            && ui->lnSecao->text().isEmpty() && ui->lnProduto->text().isEmpty()){
+        QMessageBox::about(this, "Alerta!", "Não é possível filtrar busca sem parâmetros!");
+        ui->lnFilial->setFocus();
+        return false;
+    } /*else if (ui->lnFilial->text().isEmpty() || ui->lnProduto->text().isEmpty()){
+        QMessageBox::about(this, "Alerta!", "Preenchimento do campos Filial e Produto são obrigatórios!");
+        ui->lnFilial->setFocus();
+        return false;
+    }*/
+
+    return true;
+}
+
+void Cadastro::onbtSalvarclicked()
+{
+    QStringList listFilial, listDepartamento, listSecao, listCategoria, listProduto;
+
+    if (!(ui->lnFilial->text().isEmpty())){
+        listFilial = ui->lnFilial->text().split(" - ");
+    }
+
+    if (!(ui->lnDepartamento->text().isEmpty())){
+        listDepartamento = ui->lnDepartamento->text().split(" - ");
+    }
+
+    if (!(ui->lnSecao->text().isEmpty())){
+        listSecao = ui->lnSecao->text().split(" - ");
+    }
+
+    if (!(ui->lnCategoria->text().isEmpty())){
+        listCategoria = ui->lnCategoria->text().split(" - ");
+    }
+
+    if (!(ui->lnProduto->text().isEmpty())){
+        listProduto = ui->lnProduto->text().split(" - ");
+    }
+
+    int sizeFilialList = listFilial.length();
+    int sizeDepartamentoList = listDepartamento.length();
+    int sizeSecaoList = listSecao.length();
+    int sizeCategoriaList = listCategoria.length();
+    int sizeProdutoList = listProduto.length();
+    QString idDaFilial = " ";
+    QString idDoDepartamento = " ";
+    QString idDaSecao = " ";
+    QString idDaCategoria = " ";
+    QString idDoProduto = " ";
+
+//        int sizeProdutoList = listProduto.length();
+
+        for (int i = 0; i < sizeFilialList; i++) {
+            idDaFilial = listFilial.at(0);
+        }
+
+        for (int i=0; i < sizeDepartamentoList; i++){
+            idDoDepartamento = listDepartamento.at(0);
+        }
+
+        for (int i=0; i<sizeSecaoList; i++){
+            idDaSecao = listSecao.at(0);
+        }
+
+        for (int i=0; i<sizeCategoriaList; i++){
+            idDaCategoria = listCategoria.at(0);
+        }
+
+        for (int i=0; i<sizeProdutoList; i++){
+            idDoProduto = listProduto.at(0);
+        }
+
+        int Filial = idDaFilial.toInt();
+        int Departamento = idDoDepartamento.toInt();
+        int Secao = idDaSecao.toInt();
+        int Categoria = idDaCategoria.toInt();
+        int Produto = idDoProduto.toInt();
+
+    if (verificaCampos()){
+        Filtro* filtro = new Filtro;
+        filtro->setFilial(Filial);
+        qDebug() << "filial: " << filtro->getFilial();
+        filtro->setDepartamento(Departamento);
+        filtro->setSecao(Secao);
+        filtro->setCategoria(Categoria);
+        filtro->setProduto(Produto);
+        ListRelatorioBase* listRelatorio = new ListRelatorioBase(filtro);
+        listRelatorio->show();
+        qDebug() << "Log: usuário salvou a busca/os dados";
+    }
+
+}
+
+
 void Cadastro::configuracaoInicial()
 {
      setConnects();
-     //ui->lnBase->set
-//     Relatorio* relatorio = new Relatorio();
-//     ui->stRelatorio->addWidget(relatorio);
 }
 
 void Cadastro::setConnects()
 {
-    connect(ui->btBase, SIGNAL(clicked()), this, SLOT(onbtBaseclicked()));
     connect(ui->btFilial, SIGNAL(clicked()), this, SLOT(onbtFilialclicked()));
     connect(ui->btDepartamento, SIGNAL(clicked()), this, SLOT(onbtDepartamentoclicked()));
     connect(ui->btProduto, SIGNAL(clicked()), this, SLOT(onbtProdutoclicked()));
@@ -287,5 +448,5 @@ void Cadastro::setConnects()
     connect(ui->lnDepartamento, SIGNAL(returnPressed()), this, SLOT(onlnDepartamentoinformed()));
     connect(ui->lnProduto, SIGNAL(returnPressed()), this, SLOT(onlnProdutoinformed()));
     connect(ui->lnCategoria, SIGNAL(returnPressed()), this, SLOT(onlnCategoriainformed()));
-    connect(ui->lnBase, SIGNAL(returnPressed()), this, SLOT(onlnBaseinformed()));
+    connect(ui->lnSecao, SIGNAL(returnPressed()), this, SLOT(onlnSecaoInformed()));
 }

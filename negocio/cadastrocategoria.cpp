@@ -32,16 +32,38 @@ bool CadastroCategoria::salvarDescricaoCategoria(QString descricao)
     return true;
 }
 
-//void CadastroCategoria::setDescricao(const QString &value)
-//{
-//    QSqlQuery query;
-//    query.prepare("INSERT INTO categoria(categoria) values ('" + value + "');");
-//    query.exec();
-//    descricao = value;
-//}
-
-int CadastroCategoria::getIdCategoria() const
+QList<Categoria*> CadastroCategoria::getInformacoesCategoria()
 {
+    QList<Categoria*> categorias;
+    QSqlQuery query;
+    query.prepare("select categoria.id_categoria, categoria.categoria, "
+                  "categoria.id_secao, secao.secao from categoria, "
+                  "secao where categoria.id_secao = secao.id_secao;");
+    query.exec();
+    while(query.next())
+    {
+        Categoria* categoria = new Categoria;
+        categoria->setIdCategoria(query.value("id_categoria").toLongLong());
+        categoria->setDescCategoria(query.value("categoria").toString());
+        categoria->setIdSecao(query.value("id_secao").toLongLong());
+        categoria->setDescSecao(query.value("secao").toString());
+        categorias << categoria;
+    }
+    return categorias;
+}
+int CadastroCategoria::getIdCategoria(int idProduto) const
+{
+    QSqlQuery query;
+    query.prepare("SELECT categoria.id_categoria, produto.id_categoria FROM categoria, produto"
+                  "where categoria.id_categoria = (:idproduto);");
+    query.bindValue(":idproduto", idProduto);
+    query.exec();
+//                  "where categoria.id_categoria = produto.id_categoria;");
+//    query.exec();
+    int id;
+    if (query.next()){
+        id = query.value("id_categoria").toInt();
+    }
     return id;
 }
 
@@ -57,3 +79,20 @@ int CadastroCategoria::RetornaIdAtravesdaDescricao(const QString &UsadaParaBusca
 
     return id;
 }
+
+//QString CadastroCategoria::getDescSecao() const
+//{
+//    QSqlQuery query;
+//    query.prepare("SELECT secao FROM secao;");
+//    query.exec();
+//    QString descSecao;
+//    while (query.next()){
+//        Categoria* categoria = new Categoria;
+//        descSecao = query.value("secao").toString();
+//    }
+//    //qDebug() << descSecao;
+//    return descSecao;
+//}
+
+
+

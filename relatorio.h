@@ -16,10 +16,10 @@ public:
 
 
 private slots:
-    void onEditarClicked();
+    void onCadastrarProdutoClicked();
     void onFiltrarClicked();
-    void onLimparClicked();
     void montarTw();
+    void onVoltarClicked();
 
 private:
     Ui::Relatorio *ui;

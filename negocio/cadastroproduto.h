@@ -3,6 +3,7 @@
 #include <QObject>
 #include <QtSql/QSqlDatabase>
 #include <QSqlQuery>
+#include "dominio/produto.h"
 
 
 class CadastroProduto : public QObject
@@ -15,18 +16,20 @@ public:
 
     QString getDescricaoProduto(int id) const;
     bool inserirDescricaoProduto(const QString &value);
+    QList<Produto*> getInformacoesProduto();
+
 
     QSqlDatabase db;
 
-    double getValorProduto() const;
-    bool defineValorProduto(QString preco);
+    double getValorProduto(int idProduto) const;
+    bool defineValorProduto(double preco);
 
     int RetornaIdDoProdutoPelaDescricao (const QString &UsadaParaBuscarIdDoProduto);
 
 private:
     int id;
     QString descricao;
-    QString preco;
+    double preco;
     QString UsadaParaBuscarIdDoProduto;
 
 };

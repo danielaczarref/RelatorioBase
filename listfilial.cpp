@@ -13,7 +13,7 @@ ListFilial::ListFilial(QWidget *parent) :
     QTableWidget* tableWidget = new QTableWidget;
    // tableWidget->setItem(0, 1, new QTableWidgetItem("Hello"));
     //tableWidget->setModel(model);
-    tableWidget->show();
+    //tableWidget->show();
 
     QList<Filial*> listaFiliais;
     CadastroFilial* cadastroFilial = new CadastroFilial;
