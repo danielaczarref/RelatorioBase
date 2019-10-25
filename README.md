@@ -23,3 +23,9 @@ Para o desenvolvimento e uso deste programa, foram utilizados:
   - Qt Creator 4.5.2;
   - Postegres;
   - DataGrip.
+
+## Pontos a Melhorar
+
+- Front-End;
+- Organização das classes;
+- Exibição do relatório.
