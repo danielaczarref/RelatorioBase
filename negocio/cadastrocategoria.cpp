@@ -51,6 +51,19 @@ QList<Categoria*> CadastroCategoria::getInformacoesCategoria()
     }
     return categorias;
 }
+
+bool CadastroCategoria::verificaSeExiste(QString texto)
+{
+    QSqlQuery query;
+    query.prepare("select id_categoria, categoria from categoria "
+                  "where cast(id_categoria as varchar) like '%" + texto +"%' or categoria like '%" + texto + "%';");
+    query.exec();
+    if (!query.next()){
+        return false;
+    } else {
+        return true;
+    }
+}
 int CadastroCategoria::getIdCategoria(int idProduto) const
 {
     QSqlQuery query;

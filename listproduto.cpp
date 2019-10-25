@@ -4,15 +4,33 @@
 #include <QTableWidgetItem>
 #include "negocio/cadastroproduto.h"
 #include "dominio/produto.h"
+#include <QListWidget>
+#include <QListWidgetItem>
+#include "dominio/estoque.h"
+#include "dominio/filial.h"
+#include <QDebug>
 
 ListProduto::ListProduto(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ListProduto)
 {
     ui->setupUi(this);
-    QTableWidget* tableWidget = new QTableWidget;
-   // tableWidget->show();
+    configuracaoInicial();
+}
 
+ListProduto::~ListProduto()
+{
+    delete ui;
+}
+
+void ListProduto::configuracaoInicial()
+{
+    preencherRelatorioProdutos();
+    setConnects();
+}
+
+void ListProduto::preencherRelatorioProdutos()
+{
     QList<Produto*> listaProdutos;
     CadastroProduto* cadastroProduto = new CadastroProduto;
 
@@ -29,6 +47,7 @@ ListProduto::ListProduto(QWidget *parent) :
         item = new QTableWidgetItem;
         item->setText(produto->getDescProduto());
         ui->tableWidget->setItem(linha, 1, item);
+        item->setData(QTableWidgetItem::UserType, QVariant(QMetaType::QObjectStar, &produto));
 
         item = new QTableWidgetItem;
         item->setText("R$ " +QString("%1").arg(produto->getValorProduto()));
@@ -42,10 +61,48 @@ ListProduto::ListProduto(QWidget *parent) :
         item->setText(produto->getCategoria()->getDescCategoria());
         ui->tableWidget->setItem(linha, 4, item);
         linha++;
+
+        ui->tableWidget->resizeColumnsToContents();
+        ui->tableWidget->resizeRowsToContents();
     }
 }
 
-ListProduto::~ListProduto()
+void ListProduto::setConnects()
 {
-    delete ui;
+    connect(ui->tableWidget, SIGNAL(itemDoubleClicked(QTableWidgetItem*)), this, SLOT(clicouProdutoSelecionado(QTableWidgetItem*)));
+}
+
+QString ListProduto::getId()
+{
+    return _idProduto;
+}
+
+void ListProduto::clicouProdutoSelecionado(QTableWidgetItem *item)
+{
+    if(item == nullptr)
+        return;
+
+    qDebug() << item->row();
+
+    QTableWidgetItem* itemId = ui->tableWidget->item(item->row(), 0);
+
+    if(itemId == nullptr)
+        return;
+
+    _idProduto = itemId->text();
+
+    qDebug() << "printando pra ver se chegou aqui" ;
+    CadastroProduto* cadastroProduto;
+
+    QVariant value = item->data(QTableWidgetItem::UserType);
+    if (!value.isNull()){
+        qDebug() << "entrou aqui johnnys";
+        cadastroProduto = qobject_cast<CadastroProduto*>(qvariant_cast<QObject*>(value));
+        if (cadastroProduto != nullptr) {
+            qDebug() << "entrou aqui johnnys 2";
+
+        }
+    }
+
+    this->accept();
 }

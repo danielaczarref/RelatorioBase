@@ -50,7 +50,8 @@ SOURCES += \
     listproduto.cpp \
     listrelatoriobase.cpp \
     dao/estoquedao.cpp \
-    negocio/filtro.cpp
+    negocio/filtro.cpp \
+    cadastroparacada.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -77,7 +78,8 @@ HEADERS += \
     listproduto.h \
     listrelatoriobase.h \
     dao/estoquedao.h \
-    negocio/filtro.h
+    negocio/filtro.h \
+    cadastroparacada.h
 
 FORMS += \
         mainwindow.ui \
@@ -88,6 +90,7 @@ FORMS += \
     listsecao.ui \
     listcategoria.ui \
     listproduto.ui \
-    listrelatoriobase.ui
+    listrelatoriobase.ui \
+    cadastroparacada.ui
 
 DISTFILES +=

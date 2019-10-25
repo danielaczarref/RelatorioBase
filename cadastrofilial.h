@@ -20,6 +20,7 @@ public:
     QList<Filial*> getInformacoesFilial();
     QList<QString> leDescricaoFilial();
     int RetornaIdDaFilial(const QString &BuscaIdDaFilialPelaDescricao);
+    bool verificaSeExiste(QString texto);
 
     QSqlDatabase db;
 

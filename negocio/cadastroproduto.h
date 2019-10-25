@@ -17,6 +17,7 @@ public:
     QString getDescricaoProduto(int id) const;
     bool inserirDescricaoProduto(const QString &value);
     QList<Produto*> getInformacoesProduto();
+    bool verificaSeExiste(QString texto);
 
 
     QSqlDatabase db;

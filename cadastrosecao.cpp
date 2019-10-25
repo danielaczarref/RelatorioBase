@@ -73,3 +73,16 @@ int CadastroSecao::BuscaIdPelaDescricaoDaSecao(const QString &RetornaIdPelaDescr
     return id;
 }
 
+bool CadastroSecao::verificaSeExiste(QString texto)
+{
+    QSqlQuery query;
+    query.prepare("select id_secao, secao from secao "
+                  "where cast(id_secao as varchar) like '%" + texto +"%' or secao like '%" + texto + "%';");
+    query.exec();
+    if (!query.next()){
+        return false;
+    } else {
+        return true;
+    }
+}
+

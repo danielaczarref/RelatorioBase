@@ -18,6 +18,7 @@ public:
     QString getDescricaoSecao(int id) const;
     bool inserirDescricaoSecao(const QString &value);
     int BuscaIdPelaDescricaoDaSecao (const QString &RetornaIdPelaDescricaoDaSecao);
+    bool verificaSeExiste(QString texto);
 
     QList<QString> getDescDepartamento() const;
 

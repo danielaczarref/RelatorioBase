@@ -41,6 +41,9 @@
    <property name="sizeAdjustPolicy">
     <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
    </property>
+   <property name="editTriggers">
+    <set>QAbstractItemView::NoEditTriggers</set>
+   </property>
    <attribute name="horizontalHeaderDefaultSectionSize">
     <number>145</number>
    </attribute>

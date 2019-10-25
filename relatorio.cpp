@@ -8,6 +8,7 @@
 #include <QTableWidgetItem>
 #include "negocio/cadastroestoque.h"
 #include "dominio/estoque.h"
+#include "negocio/filtro.h"
 
 const int COLUNA_ID = 0;
 
@@ -17,23 +18,36 @@ Relatorio::Relatorio(QWidget *parent) : QWidget(parent),    ui(new Ui::Relatorio
     configuracaoInicial();
     ui->pbVoltar->setVisible(false);
 
-    QTableWidget* tableWidget = new QTableWidget;
+}
+
+
+Relatorio::~Relatorio()
+{
+    delete ui;
+}
+
+void Relatorio::preencherRelatorio(Filtro *filtro)
+{
+    filtroCorreto = filtro;
 
     QList<Estoque*> listaEstoque;
     CadastroEstoque* cadastroEstoque = new CadastroEstoque;
 
-    //listaEstoque = cadastroEstoque->getInformacoesEstoque();
+    listaEstoque = cadastroEstoque->recuperarEstoques(filtroCorreto);
 
     int linha = 0;
 
-    foreach (Estoque* estoque, listaEstoque){
+    foreach (Estoque* estoque, listaEstoque)
+    {
         ui->tableWidget->insertRow(linha);
         QTableWidgetItem* item = new QTableWidgetItem;
         item->setText(QString("%1").arg(estoque->getFilial()->getIdFilial()));
+        qDebug() << "print id filial: " << item;
         ui->tableWidget->setItem(linha, 0, item);
 
         item = new QTableWidgetItem;
         item->setText(estoque->getFilial()->getDescFilial());
+        item->setData(QTableWidgetItem::UserType, QVariant(QMetaType::QObjectStar, &estoque));
         ui->tableWidget->setItem(linha, 1, item);
 
         item = new QTableWidgetItem;
@@ -53,12 +67,29 @@ Relatorio::Relatorio(QWidget *parent) : QWidget(parent),    ui(new Ui::Relatorio
         ui->tableWidget->setItem(linha, 5, item);
 
         item = new QTableWidgetItem;
-        item->setText(QString("%1").arg(estoque->getCategoria()->getIdCategoria()));
+        item->setText(QString("%1").arg(estoque->getProduto()->getCategoria()->getIdCategoria()));
         ui->tableWidget->setItem(linha, 6, item);
 
         item = new QTableWidgetItem;
-        item->setText(estoque->getCategoria()->getDescCategoria());
+        item->setText(estoque->getProduto()->getCategoria()->getDescCategoria());
         ui->tableWidget->setItem(linha, 7, item);
+
+        item = new QTableWidgetItem;
+        item->setText(QString("%1").arg(estoque->getProduto()->getSecao()->getIdSecao()));
+        ui->tableWidget->setItem(linha, 8, item);
+
+        item = new QTableWidgetItem;
+        item->setText(estoque->getProduto()->getSecao()->getDescSecao());
+        ui->tableWidget->setItem(linha, 9, item);
+
+        item = new QTableWidgetItem;
+        item->setText(QString("%1").arg(estoque->getProduto()->getDepartamento()->getIdDepartamento()));
+        ui->tableWidget->setItem(linha, 10, item);
+
+        item = new QTableWidgetItem;
+        item->setText(estoque->getProduto()->getDepartamento()->getDescDepartamento());
+        ui->tableWidget->setItem(linha, 11, item);
+
 
         linha++;
     }
@@ -66,11 +97,8 @@ Relatorio::Relatorio(QWidget *parent) : QWidget(parent),    ui(new Ui::Relatorio
     ui->tableWidget->resizeColumnsToContents();
     ui->tableWidget->resizeRowsToContents();
 
-}
 
-Relatorio::~Relatorio()
-{
-    delete ui;
+
 }
 
 void Relatorio::onCadastrarProdutoClicked()
@@ -93,48 +121,6 @@ void Relatorio::onFiltrarClicked()
 
 void Relatorio::montarTw()
 {
-//    QList<CadastroBase*> list;
-
-//    CadastroBase* cad1 = new CadastroBase;
-
-////    QString a = cad1->categoria();
-//    cad1->setCategoria("Cad1");
-//    cad1->setProduto("Prod1");
-//    cad1->setBase("1");
-
-//    list << cad1;
-
-//    CadastroBase* cad2 = new CadastroBase;
-//    cad2->setCategoria("Cad2");
-//    cad2->setProduto("Prod2");
-//    cad2->setBase("2");
-
-//    list << cad2;
-
-//    CadastroBase* cad3 = new CadastroBase;
-//    cad3->setCategoria("Cad3");
-//    cad3->setProduto("Prod3");
-//    cad3->setBase("3");
-
-//    list << cad3;
-
-//    int linha=0;
-//    foreach (CadastroBase* cad, list) {
-//        ui->tableWidget->insertRow(linha);
-
-//        QTableWidgetItem* item = new QTableWidgetItem;
-//        item->setText(cad->categoria());
-//        ui->tableWidget->setItem(linha, 0, item);
-//        QTableWidgetItem* item1 = new QTableWidgetItem;
-//        item1->setText(cad->produto());
-//        ui->tableWidget->setItem(linha,1,item1);
-//        QTableWidgetItem* item2 = new QTableWidgetItem;
-//        item2->setText(cad->base() + "%");
-//        ui->tableWidget->setItem(linha, 2, item2);
-
-//        linha++;
-//    }
-
 }
 
 void Relatorio::onVoltarClicked()
@@ -158,5 +144,19 @@ void Relatorio::setConnects()
     connect(ui->pbCadastrar, SIGNAL(clicked()), this, SLOT(onCadastrarProdutoClicked()));
     connect(ui->pbFiltrar, SIGNAL(clicked()), this, SLOT(onFiltrarClicked()));
     connect(ui->pbVoltar, SIGNAL(clicked()), this, SLOT(onVoltarClicked()));
+    connect(ui->tableWidget, SIGNAL(itemDoubleClicked(QTableWidgetItem*)), this, SLOT(clicouProdutoSelecionado(QTableWidgetItem*)));
 
+
+}
+
+void Relatorio::clicouProdutoSelecionado(QTableWidgetItem *item)
+{
+    qDebug() << "printando pra ver se chegou aqui" ;
+    Estoque* estoque;
+
+    QVariant value = item->data(QTableWidgetItem::UserType);
+    if (!value.isNull())
+        estoque = qobject_cast<Estoque*>(qvariant_cast<QObject*>(value));
+
+    qDebug() << "print daniel: " << estoque->getFilial()->getDescFilial();
 }

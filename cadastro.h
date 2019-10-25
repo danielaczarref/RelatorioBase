@@ -33,6 +33,7 @@ private slots:
     void onbtFilialclicked();
     void onbtDepartamentoclicked();
     void onbtCategoriaclicked();
+    void onbtSecaoclicked();
     void onbtProdutoclicked();
     void onbtSalvarclicked();
     void onbtLimparclicked();

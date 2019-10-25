@@ -78,4 +78,17 @@ int CadastroFilial::RetornaIdDaFilial(const QString &BuscaIdDaFilialPelaDescrica
     return id;
 }
 
+bool CadastroFilial::verificaSeExiste(QString texto)
+{
+    QSqlQuery query;
+    query.prepare("select id, descricao from filial "
+                  "where cast(id as varchar) like '%" + texto +"%' or descricao like '%" + texto + "%';");
+    query.exec();
+    if (!query.next()){
+        return false;
+    } else {
+        return true;
+    }
+}
+
 

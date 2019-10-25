@@ -17,7 +17,7 @@ public:
     QString getDescricaoDepartamento(int id) const;
     bool defineDescricaoDepartamento(const QString &value);
     int buscaIdDoDepartamento (const QString &StringParaBuscarIdDepartamento);
-
+    bool verificaSeExiste(QString texto);
     QList<Departamento*> getInformacoesDepartamento();
 
     QSqlDatabase db;

@@ -29,7 +29,6 @@
 #include "cadastrosecao.h"
 #include "negocio/filtro.h"
 
-
 using namespace std;
 
 Cadastro::Cadastro(QWidget *parent) : QWidget(parent), ui(new Ui::Cadastro)
@@ -56,30 +55,68 @@ Cadastro::~Cadastro()
 
 void Cadastro::onbtFilialclicked()
 {
+    QString id;
+    CadastroFilial* cadastroFilial = new CadastroFilial;
     ListFilial* listaFilial = new ListFilial;
-    listaFilial->show();
+    if (listaFilial->exec() == QDialog::Accepted) {
+        id = listaFilial->getId();
+        QString novaDescFilial = cadastroFilial->getDescricaoFilial(id.toInt());
+        ui->lnFilial->setText(id + " - " + novaDescFilial);
+    }
+    //listaFilial->show();
 
     qDebug() << "Log: usuário pesquisou filial";
 }
 
 void Cadastro::onbtDepartamentoclicked()
 {
+    QString id;
+    CadastroDepartamento* cadastroDepartamento = new CadastroDepartamento;
     listDepartamento* listDep = new listDepartamento;
-    listDep->show();
+    if (listDep->exec() == QDialog::Accepted){
+        id = listDep->getId();
+        QString novaDescDepartamento = cadastroDepartamento->getDescricaoDepartamento(id.toInt());
+        ui->lnDepartamento->setText(id + " - " + novaDescDepartamento);
+    }
     qDebug() << "Log: usuário pesquisou departamento";
 }
 
 void Cadastro::onbtCategoriaclicked()
 {
+    QString id;
+    CadastroCategoria* cadastroCategoria = new CadastroCategoria;
     ListCategoria* listCategoria = new ListCategoria;
-    listCategoria->show();
-    qDebug() << "Log: usuário pesquisou categoria";
+    if(listCategoria->exec() == QDialog::Accepted) {
+        id = listCategoria->getId();
+        QString novaDescCategoria = cadastroCategoria->getDescricaoCategoria(id.toInt());
+        ui->lnCategoria->setText(id + " - " + novaDescCategoria);
+    }
+
+    qDebug() << "Log: usuário pesquisou categoria " << id;
+}
+
+void Cadastro::onbtSecaoclicked()
+{
+    QString id;
+    CadastroSecao* cadastroSecao = new CadastroSecao;
+    ListSecao* listSecao = new ListSecao;
+    if (listSecao->exec() == QDialog::Accepted){
+        id = listSecao->getId();
+        QString novaDescSecao = cadastroSecao->getDescricaoSecao(id.toInt());
+        ui->lnSecao->setText(id + " - " + novaDescSecao);
+    }
 }
 
 void Cadastro::onbtProdutoclicked()
 {
+    QString id;
+    CadastroProduto* cadastroProduto = new CadastroProduto;
     ListProduto* listProduto = new ListProduto;
-    listProduto->show();
+    if (listProduto->exec() == QDialog::Accepted){
+        id = listProduto->getId();
+        QString novaDescProduto = cadastroProduto->getDescricaoProduto(id.toInt());
+        ui->lnProduto->setText(id + " - " + novaDescProduto);
+    }
     qDebug() << "Log: usuário pesquisou produto";
 }
 
@@ -90,84 +127,107 @@ void Cadastro::onbtLimparclicked()
 
 void Cadastro::onlnFilialinformed()
 {
-
-    if (ui->lnFilial->text().isEmpty()){
-        QMessageBox::about(this, "Alerta!", "Por favor, preencha todos os campos!");
-        qDebug() << "Log: usuário não informou filial";
-    } else if (!(validaString(ui->lnFilial->text()))){
+    if (!(validaString(ui->lnFilial->text())))
+    {
         QMessageBox::about(this, "Alerta!", "Nome inválido!");
         qDebug() << "Log: usuário informou nome para filial inválido";
-    } else if (VerificaSeENumero(ui->lnFilial->text())) {
-        qDebug() << "Log: usuário informou id da filial desejada";
+        ui->lnFilial->clear();
+    }
+    else if (!(ui->lnFilial->text().isEmpty()))
+    {
         CadastroFilial* cadastroFilial = new CadastroFilial;
-        QString id = ui->lnFilial->text();
-        idFilial = id.toInt();
-        qDebug() << "id filial ANTES: " << idFilial;
-        QString descricao = cadastroFilial->getDescricaoFilial(ui->lnFilial->text().toInt());
-        ui->lnFilial->setText(id + " - " + descricao);
-    } else {
-            QString descFilial = ui->lnFilial->text().toUpper();
-            CadastroFilial* cadastroFilial = new CadastroFilial;
-           // cadastroFilial->RetornaIdDaFilial(descFilial);
-            qDebug() << "Entrei aqui";
-            idFilial = cadastroFilial->RetornaIdDaFilial(descFilial);
-            qDebug() << "entrei aqui tbm kkk bjs";
-            ui->lnFilial->setText(QString::number(idFilial) + " - " + descFilial);
-            qDebug() << "Log: usuário informou filial com sucesso!";
-        } 
-
-//    ui->lnCategoria->setProperty("id", idCategoria);
-//    long long id = ui->lnCategoria->property("id");
-
+        if (!(cadastroFilial->verificaSeExiste(ui->lnFilial->text().toUpper())))
+        {
+            QMessageBox::about(this, "Erro!", "Dados informados não existem!");
+            ui->lnFilial->clear();
+        }
+        else {
+            if (VerificaSeENumero(ui->lnFilial->text()))
+            {
+                QString id = ui->lnFilial->text();
+                QString descricao = cadastroFilial->getDescricaoFilial(id.toInt());
+                ui->lnFilial->setText(id + " - " + descricao);
+                qDebug() << "Log: usuário informou filial com sucesso!";
+            }
+            else
+            {
+                QString descFilial = ui->lnFilial->text().toUpper();
+                int identificacaoFilial = cadastroFilial->RetornaIdDaFilial(descFilial);
+                ui->lnFilial->setText(QString::number(identificacaoFilial) + " - " + descFilial);
+                qDebug() << "Log: usuário informou departamento com sucesso!";
+            }
+        }
+    }
 }
 
 void Cadastro::onlnDepartamentoinformed()
-{    
-    if (ui->lnDepartamento->text().isEmpty()){
-        QMessageBox::about(this, "Alerta!", "Por favor, preencha todos os campos!");
-        qDebug() << "Log: usuário não informou departamento";
-    } else if (!(validaString(ui->lnDepartamento->text()))){
-        QMessageBox::about(this, "Alerta!", "Nome inválido!");
-        qDebug() << "Log: usuário informou nome para departamento inválido";
-    } else if (VerificaSeENumero(ui->lnDepartamento->text())) {
-        qDebug() << "Log: usuário informou número do departamento desejado";
-        CadastroDepartamento* cadastroDepartmento = new CadastroDepartamento;
-        QString id = ui->lnDepartamento->text();
-        idDepartamento = id.toInt();
-        QString descricao = cadastroDepartmento->getDescricaoDepartamento(ui->lnDepartamento->text().toInt());
-        qDebug() << descricao;
-        ui->lnDepartamento->setText(id + " - " + descricao);
+{
 
-    }else {
-        QString descDepartamento = ui->lnDepartamento->text().toUpper();
+    if (!(validaString(ui->lnDepartamento->text())))
+    {
+        QMessageBox::about(this, "Alerta!", "Nome inválido!");
+        ui->lnDepartamento->clear();
+        qDebug() << "Log: usuário informou nome para departamento inválido";
+    }
+    else if (!(ui->lnDepartamento->text().isEmpty()))
+    {
         CadastroDepartamento* cadastroDepartamento = new CadastroDepartamento;
-        idDepartamento = cadastroDepartamento->buscaIdDoDepartamento(descDepartamento);
-        ui->lnDepartamento->setText(QString::number(idDepartamento) + " - " + descDepartamento);
-        qDebug() << "Log: usuário informou departamento com sucesso!";
+        if (!(cadastroDepartamento->verificaSeExiste(ui->lnDepartamento->text().toUpper())))
+        {
+            QMessageBox::about(this, "Erro!", "Dados informados não existem!");
+            ui->lnDepartamento->clear();
+        }
+        else {
+            if (VerificaSeENumero(ui->lnDepartamento->text()))
+            {
+                QString id = ui->lnDepartamento->text();
+                QString descricao = cadastroDepartamento->getDescricaoDepartamento(id.toInt());
+                ui->lnDepartamento->setText(id + " - " + descricao);
+                qDebug() << "Log: usuário informou departamento com sucesso!";
+            }
+            else
+            {
+                QString descDepartamento = ui->lnDepartamento->text().toUpper();
+                int idDept = cadastroDepartamento->buscaIdDoDepartamento(descDepartamento);
+                ui->lnDepartamento->setText(QString::number(idDept) + " - " + descDepartamento);
+                qDebug() << "Log: usuário informou departamento com sucesso!";
+            }
+        }
     }
 }
 
 void Cadastro::onlnSecaoInformed()
 {
-    if (!(validaString(ui->lnSecao->text()))){
-        QMessageBox::about(this, "Alerta!", "Uso de caracteres inválido!");
+    if (!(validaString(ui->lnSecao->text())))
+    {
+        QMessageBox::about(this, "Alerta!", "Nome inválido!");
+        ui->lnSecao->clear();
         qDebug() << "Log: usuário informou nome para seção inválido";
-    } else if (VerificaSeENumero(ui->lnSecao->text())){
-        qDebug() << "Log: usuário informou número para seção desejada";
+    }
+    else if (!(ui->lnSecao->text().isEmpty()))
+    {
         CadastroSecao* cadastroSecao = new CadastroSecao;
-        QString id = ui->lnSecao->text();
-        idSecao = id.toInt();
-        qDebug() << "id secao ANTES: " << idSecao;
-        QString descricao = cadastroSecao->getDescricaoSecao(ui->lnSecao->text().toInt());
-        qDebug() << descricao;
-        ui->lnSecao->setText(id + " - " + descricao);
-
-    } else {
-        QString descSecao = ui->lnSecao->text().toUpper();
-        CadastroSecao* cadastroSecao = new CadastroSecao;
-        idSecao = cadastroSecao->BuscaIdPelaDescricaoDaSecao(descSecao);
-        ui->lnSecao->setText(QString::number(idSecao) + " - " + descSecao);
-        qDebug() << "Log: usuário informou seção com suceso!";
+        if (!(cadastroSecao->verificaSeExiste(ui->lnSecao->text().toUpper())))
+        {
+            QMessageBox::about(this, "Erro!", "Dados informados não existem!");
+            ui->lnSecao->clear();
+        }
+        else {
+            if (VerificaSeENumero(ui->lnSecao->text()))
+            {
+                QString id = ui->lnSecao->text();
+                QString descricao = cadastroSecao->getDescricaoSecao(id.toInt());
+                ui->lnSecao->setText(id + " - " + descricao);
+                qDebug() << "Log: usuário informou departamento com sucesso!";
+            }
+            else
+            {
+                QString descSecao = ui->lnSecao->text().toUpper();
+                int identificacaoSecao = cadastroSecao->BuscaIdPelaDescricaoDaSecao(descSecao);
+                ui->lnSecao->setText(QString::number(identificacaoSecao) + " - " + descSecao);
+                qDebug() << "Log: usuário informou departamento com sucesso!";
+            }
+        }
     }
 }
 
@@ -237,54 +297,71 @@ QString Cadastro::getRetornalnFilial() const
 
 void Cadastro::onlnCategoriainformed()
 {    
-    if (ui->lnCategoria->text().isEmpty()){
-        QMessageBox::about(this, "Alerta!", "Por favor, preencha todos os campos!");
-        qDebug() << "Log: usuário não informou categoria";
-    } else if (!(validaString(ui->lnCategoria->text()))){
+    if (!(validaString(ui->lnCategoria->text())))
+    {
         QMessageBox::about(this, "Alerta!", "Nome inválido!");
+        ui->lnCategoria->clear();
         qDebug() << "Log: usuário informou nome para categoria inválido";
-    } else if (VerificaSeENumero(ui->lnCategoria->text())){
-        qDebug() << "Log: usuário informou id da categoria desejada";
+    }
+    else if (!(ui->lnCategoria->text().isEmpty()))
+    {
         CadastroCategoria* cadastroCategoria = new CadastroCategoria;
-        QString id = ui->lnCategoria->text();
-        idCategoria = id.toInt();
-        QString identificacao = cadastroCategoria->getDescricaoCategoria(ui->lnCategoria->text().toInt());
-        ui->lnCategoria->setText(id + " - " + identificacao);
-    } else {
-        QString descCategoria = ui->lnCategoria->text().toUpper();
-        CadastroCategoria* cadastroCategoria = new CadastroCategoria;
-        idCategoria = cadastroCategoria->RetornaIdAtravesdaDescricao(descCategoria);
-        ui->lnCategoria->setText(QString::number(idCategoria) + " - " + descCategoria);
-        qDebug() << "Log: usuário informou categoria com sucesso!";
+        if (!(cadastroCategoria->verificaSeExiste(ui->lnCategoria->text().toUpper())))
+        {
+            QMessageBox::about(this, "Erro!", "Dados informados não existem!");
+            ui->lnCategoria->clear();
+        }
+        else {
+            if (VerificaSeENumero(ui->lnCategoria->text()))
+            {
+                QString id = ui->lnCategoria->text();
+                QString descricao = cadastroCategoria->getDescricaoCategoria(id.toInt());
+                ui->lnCategoria->setText(id + " - " + descricao);
+                qDebug() << "Log: usuário informou categoria com sucesso!";
+            }
+            else
+            {
+                QString descCategoria = ui->lnCategoria->text().toUpper();
+                int idCateg = cadastroCategoria->RetornaIdAtravesdaDescricao(descCategoria);
+                ui->lnCategoria->setText(QString::number(idCateg) + " - " + descCategoria);
+                qDebug() << "Log: usuário informou categoria com sucesso!";
+            }
+        }
     }
 }
 
 void Cadastro::onlnProdutoinformed()
 {    
-    if (ui->lnProduto->text().isEmpty()){
-        QMessageBox::about(this, "Alerta!", "Por favor, preencha todos os campos!");
-        qDebug() << "Log: usuário não informou produto";
-    } else if (!(validaString(ui->lnProduto->text()))){
+    if (!(validaString(ui->lnProduto->text())))
+    {
         QMessageBox::about(this, "Alerta!", "Nome inválido!");
+        ui->lnProduto->clear();
         qDebug() << "Log: usuário informou nome para produto inválido";
-    } else if (VerificaSeENumero(ui->lnProduto->text())){
-        qDebug() << "Log: usuário informou id do produto";
+    }
+    else if (!(ui->lnProduto->text().isEmpty()))
+    {
         CadastroProduto* cadastroProduto = new CadastroProduto;
-        QString identificacao = ui->lnProduto->text();
-        idProduto = identificacao.toInt();
-        QString descricaoProduto = cadastroProduto->getDescricaoProduto(ui->lnProduto->text().toInt());
-        ui->lnProduto->setText(identificacao + " - " + descricaoProduto);
-    } else {
-        QString descProduto = ui->lnProduto->text().toUpper();
-        CadastroProduto* cadastroProduto = new CadastroProduto;
-        idProduto = cadastroProduto->RetornaIdDoProdutoPelaDescricao(descProduto);
-        ui->lnProduto->setText(QString::number(idProduto) + " - " + descProduto);
-        QString descFilial = ui->lnFilial->text().toUpper();
-//        CadastroEstoque* cadastroEstoque = new CadastroEstoque;
-//        QString base = cadastroEstoque->getBasedoProdutoEstoque(descProduto,descFilial);
-//        ui->lnBase->setText(base);
-//        qDebug() << "Base: " << base;
-        qDebug() << "Log: usuário informou produto com sucesso!";
+        if (!(cadastroProduto->verificaSeExiste(ui->lnProduto->text().toUpper())))
+        {
+            QMessageBox::about(this, "Erro!", "Dados informados não existem!");
+            ui->lnProduto->clear();
+        }
+        else {
+            if (VerificaSeENumero(ui->lnProduto->text()))
+            {
+                QString id = ui->lnProduto->text();
+                QString descricao = cadastroProduto->getDescricaoProduto(id.toInt());
+                ui->lnProduto->setText(id + " - " + descricao);
+                qDebug() << "Log: usuário informou produto com sucesso!";
+            }
+            else
+            {
+                QString descProduto = ui->lnProduto->text().toUpper();
+                int idProd = cadastroProduto->RetornaIdDoProdutoPelaDescricao(descProduto);
+                ui->lnProduto->setText(QString::number(idProd) + " - " + descProduto);
+                qDebug() << "Log: usuário informou produto com sucesso!";
+            }
+        }
     }
 }
 
@@ -423,7 +500,11 @@ void Cadastro::onbtSalvarclicked()
         filtro->setCategoria(Categoria);
         filtro->setProduto(Produto);
         ListRelatorioBase* listRelatorio = new ListRelatorioBase(filtro);
+        //Relatorio* relatorio = new Relatorio;
         listRelatorio->show();
+        //relatorio->show();
+        //relatorio->preencherRelatorio(filtro);
+        ui->stRelatorio->setCurrentIndex(0);
         qDebug() << "Log: usuário salvou a busca/os dados";
     }
 
@@ -439,6 +520,7 @@ void Cadastro::setConnects()
 {
     connect(ui->btFilial, SIGNAL(clicked()), this, SLOT(onbtFilialclicked()));
     connect(ui->btDepartamento, SIGNAL(clicked()), this, SLOT(onbtDepartamentoclicked()));
+    connect(ui->btSecao, SIGNAL(clicked()), this, SLOT(onbtSecaoclicked()));
     connect(ui->btProduto, SIGNAL(clicked()), this, SLOT(onbtProdutoclicked()));
     connect(ui->btCategoria, SIGNAL(clicked()), this, SLOT(onbtCategoriaclicked()));
     connect(ui->btLimpar, SIGNAL(clicked()), this, SLOT(onbtLimparclicked()));

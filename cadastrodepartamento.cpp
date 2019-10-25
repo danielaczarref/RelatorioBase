@@ -50,6 +50,19 @@ int CadastroDepartamento::buscaIdDoDepartamento(const QString &StringParaBuscarI
     return id;
 }
 
+bool CadastroDepartamento::verificaSeExiste(QString texto)
+{
+    QSqlQuery query;
+    query.prepare("select id_departamento, descricao from departamento "
+                  "where cast(id_departamento as varchar) like '%" + texto +"%' or descricao like '%" + texto + "%';");
+    query.exec();
+    if (!query.next()){
+        return false;
+    } else {
+        return true;
+    }
+}
+
 QList<Departamento *> CadastroDepartamento::getInformacoesDepartamento()
 {
     QList<Departamento*> departamentos;

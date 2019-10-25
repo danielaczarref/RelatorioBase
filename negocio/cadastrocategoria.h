@@ -17,6 +17,7 @@ public:
 //    void setDescricao(const QString &value);
     bool salvarDescricaoCategoria(QString descricao);
     QList<Categoria*> getInformacoesCategoria();
+    bool verificaSeExiste(QString texto);
 
 
     int getIdCategoria(int idProduto) const;

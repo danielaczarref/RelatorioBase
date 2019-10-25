@@ -6,18 +6,42 @@
 #include "dominio/estoque.h"
 #include "cadastro.h"
 #include <QDebug>
+#include "relatorio.h"
 
 ListRelatorioBase::ListRelatorioBase(Filtro* filtro,QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ListRelatorioBase)
 {
-    ui->setupUi(this);
-    QTableWidget* tableWidget = new QTableWidget;
 
+    ui->setupUi(this);
+    filtroCorreto = filtro;
+    configuracaoInicial();
+
+}
+
+ListRelatorioBase::~ListRelatorioBase()
+{
+    delete ui;
+}
+
+
+void ListRelatorioBase::setConnects()
+{
+    connect(ui->tableWidget, SIGNAL(itemDoubleClicked(QTableWidgetItem*)), this, SLOT(clicouProdutoSelecionado(QTableWidgetItem*)));
+}
+
+void ListRelatorioBase::configuracaoInicial()
+{
+    setConnects();
+    preencherRelatorioBase();
+}
+
+void ListRelatorioBase::preencherRelatorioBase()
+{
     QList<Estoque*> listaEstoque;
     CadastroEstoque* cadastroEstoque = new CadastroEstoque;
 
-    listaEstoque = cadastroEstoque->recuperarEstoques(filtro);
+    listaEstoque = cadastroEstoque->recuperarEstoques(filtroCorreto);
 
     int linha = 0;
 
@@ -79,7 +103,14 @@ ListRelatorioBase::ListRelatorioBase(Filtro* filtro,QWidget *parent) :
     ui->tableWidget->resizeRowsToContents();
 }
 
-ListRelatorioBase::~ListRelatorioBase()
+void ListRelatorioBase::clicouProdutoSelecionado(QTableWidgetItem *item)
 {
-    delete ui;
+    qDebug() << "printando pra ver se chegou aqui" ;
+    Estoque* estoque;
+
+    QVariant value = item->data(QTableWidgetItem::UserType);
+    if (!value.isNull())
+        estoque = qobject_cast<Estoque*>(qvariant_cast<QObject*>(value));
+
+    qDebug() << "print daniel: " << estoque->getFilial()->getDescFilial();
 }

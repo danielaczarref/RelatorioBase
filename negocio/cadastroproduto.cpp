@@ -73,6 +73,19 @@ QList<Produto *> CadastroProduto::getInformacoesProduto()
     return produtos;
 }
 
+bool CadastroProduto::verificaSeExiste(QString texto)
+{
+    QSqlQuery query;
+    query.prepare("select id_produto, produto from produto "
+                  "where cast(id_produto as varchar) like '%" + texto +"%' or produto like '%" + texto + "%';");
+    query.exec();
+    if (!query.next()){
+        return false;
+    } else {
+        return true;
+    }
+}
+
 double CadastroProduto::getValorProduto(int idProduto) const
 {
     QSqlQuery query;

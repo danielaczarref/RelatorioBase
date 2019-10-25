@@ -38,6 +38,12 @@
      <height>431</height>
     </rect>
    </property>
+   <property name="editTriggers">
+    <set>QAbstractItemView::NoEditTriggers</set>
+   </property>
+   <property name="selectionBehavior">
+    <enum>QAbstractItemView::SelectRows</enum>
+   </property>
    <attribute name="horizontalHeaderDefaultSectionSize">
     <number>150</number>
    </attribute>
