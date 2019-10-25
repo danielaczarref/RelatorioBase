@@ -6,6 +6,7 @@ Este projeto tem como intuito gerar um relatório dinâmico em que, através dos
   - Seção;
   - Categoria;
   - Produto.
+  
  Em que, pelo menos um dos campos é obrigatório para filtragem de dados proveniente do BD. A aplicação foi desenvolvida em linguagem C++ orientada a objetos, através da IDE Qt Creator versão 4.5.2, e fazendo uso de Postegres como sistema gerenciador de banco de dados objeto relacional.
  
 ## Getting Started
