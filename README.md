@@ -1,4 +1,4 @@
-# Relatório de Base de Produtos em Supermercado
+# Relatório de Base de Produtos em Rede de Supermercado
 
 Este projeto tem como intuito gerar um relatório dinâmico em que, através dos parâmetros definidos pelo usuário, resulte em um relatório contendo os produtos e suas respectivas particularidades. Isto é, em uma rede de supermercados que contém várias filiais, os preços dos produtos variam de acordo com regras de negócio de cada filial; a fim de descobrir a base de preço para cada produto, o usuário pode filtrar sua pesquisa através de:
   - Filial;
