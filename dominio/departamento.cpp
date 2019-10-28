@@ -2,7 +2,6 @@
 
 Departamento::Departamento(QObject *parent) : QObject(parent)
 {
-
 }
 
 long long Departamento::getIdDepartamento() const

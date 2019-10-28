@@ -2,7 +2,6 @@
 
 Filial::Filial(QObject *parent) : QObject(parent)
 {
-
 }
 
 long long Filial::getIdFilial() const

@@ -13,7 +13,7 @@ CadastroFilial::CadastroFilial(QObject* parent) : QObject(parent)
 QString CadastroFilial::getDescricaoFilial(int identificacao) const
 {
     QSqlQuery query;
-    query.prepare("SELECT descricao FROM filial where id = (:identificacao);"); //colocar id dps
+    query.prepare("SELECT descricao FROM filial where id = (:identificacao);");
     query.bindValue(":identificacao", identificacao);
     query.exec();
     QString descricaoFilial;

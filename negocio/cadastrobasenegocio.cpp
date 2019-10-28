@@ -2,5 +2,4 @@
 
 CadastroBaseNegocio::CadastroBaseNegocio(QObject *parent) : QObject(parent)
 {
-
 }

@@ -12,8 +12,6 @@ listDepartamento::listDepartamento(QWidget *parent) :
 {
     ui->setupUi(this);
     configuracaoInicial();
-
-
 }
 
 listDepartamento::~listDepartamento()
@@ -77,8 +75,6 @@ void listDepartamento::clicouEmDepartamentoSelecionado(QTableWidgetItem *item)
         return;
 
     _idDepartamento = itemId->text();
-
-    qDebug() << "printando pra ver se chegou aqui" ;
     CadastroDepartamento* cadastroDepartamento;
 
     QVariant value = item->data(QTableWidgetItem::UserType);
@@ -87,7 +83,6 @@ void listDepartamento::clicouEmDepartamentoSelecionado(QTableWidgetItem *item)
         cadastroDepartamento = qobject_cast<CadastroDepartamento*>(qvariant_cast<QObject*>(value));
         if (cadastroDepartamento != nullptr) {
             qDebug() << "entrou aqui johnnys 2";
-
         }
     }
 

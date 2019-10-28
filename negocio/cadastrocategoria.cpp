@@ -5,7 +5,6 @@
 
 CadastroCategoria::CadastroCategoria(QObject* parent) : QObject(parent)
 {
-
 }
 
 QString CadastroCategoria::getDescricaoCategoria(int id) const
@@ -71,8 +70,6 @@ int CadastroCategoria::getIdCategoria(int idProduto) const
                   "where categoria.id_categoria = (:idproduto);");
     query.bindValue(":idproduto", idProduto);
     query.exec();
-//                  "where categoria.id_categoria = produto.id_categoria;");
-//    query.exec();
     int id;
     if (query.next()){
         id = query.value("id_categoria").toInt();
@@ -92,20 +89,5 @@ int CadastroCategoria::RetornaIdAtravesdaDescricao(const QString &UsadaParaBusca
 
     return id;
 }
-
-//QString CadastroCategoria::getDescSecao() const
-//{
-//    QSqlQuery query;
-//    query.prepare("SELECT secao FROM secao;");
-//    query.exec();
-//    QString descSecao;
-//    while (query.next()){
-//        Categoria* categoria = new Categoria;
-//        descSecao = query.value("secao").toString();
-//    }
-//    //qDebug() << descSecao;
-//    return descSecao;
-//}
-
 
 

@@ -13,7 +13,6 @@
 
 CadastroEstoque::CadastroEstoque(QObject* parent) : QObject(parent)
 {
-
 }
 
 int CadastroEstoque::getIdProdutoEstoque() const
@@ -26,8 +25,6 @@ int CadastroEstoque::getIdProdutoEstoque() const
 
 QList<Estoque *> CadastroEstoque::getInformacoesEstoque(QString sfilial, QString sproduto)
 {
-    //QRegExp rx("(\\ |\\,|\\.|\\-|\\t)");
-
     QStringList listFilial = sfilial.split("-");
     QStringList listProduto = sproduto.split("-");
     QString IdFilial, IdProduto;
@@ -38,11 +35,9 @@ QList<Estoque *> CadastroEstoque::getInformacoesEstoque(QString sfilial, QString
     for (int i = 0; i < sizeFilialList; i++) {
         IdFilial = listFilial.at(0);
     }
-
     for (int i=0; i < sizeProdutoList; i++){
         IdProduto = listProduto.at(0);
     }
-
     int iFilial = IdFilial.toInt();
     int iProduto = IdProduto.toInt();
 
@@ -81,7 +76,6 @@ QList<Estoque *> CadastroEstoque::getInformacoesEstoque(QString sfilial, QString
     estoque->setFilial(filial);
     estoque->setProduto(produto);
     estoque->setCategoria(categoria);
-    //categoria->setDescCategoria(query.value("categoria").toString());
     dadosEstoque << estoque;
 
     return dadosEstoque;
@@ -101,7 +95,6 @@ double CadastroEstoque::getBasedoProdutoEstoque(int idProduto, int idFilial) con
     query.prepare("select base from estoque where id_produto = (:idProduto) and id_filial = (:idFilial);");
     query.bindValue(":idProduto", idProduto);
     query.bindValue(":idFilial", idFilial);
-   // query.prepare("SELECT base FROM estoque where id_produto = (select id_produto from produto where produto = '" + descProduto + "') and id_filial = (select id from filial where descricao = '" + descFilial + "');");
     query.exec();
 
     double base;
@@ -116,36 +109,11 @@ QList<Estoque *> CadastroEstoque::recuperarEstoques(Filtro* filtro)
     int sproduto = filtro->getProduto();
     qDebug() << "string filial: " << sfilial << endl;
     qDebug() << "string produto: " << sproduto << endl;
-
-//    QStringList listFilial = sfilial.split(" - ");
-//    QStringList listProduto = sproduto.split(" - ");
-//    QString IdFilial, IdProduto;
-
-//    int sizeFilialList = listFilial.length();
-//    int sizeProdutoList = listProduto.length();
-
-//    for (int i = 0; i < sizeFilialList; i++) {
-//        IdFilial = listFilial.at(0);
-//    }
-
-//    qDebug() << "id filial, primeira posição:" << IdFilial << endl;
-
-//    for (int i=0; i < sizeProdutoList; i++){
-//        IdProduto = listProduto.at(0);
-//    }
-
-//    qDebug() << "id produto, primeira posição:" << IdProduto << endl;
-
-
     long long iFilial = sfilial;
     long long iProduto = sproduto;
 
     qDebug() << "id filial eh: " << iFilial << endl;
     qDebug() << "id produto eh: " << iProduto << endl;
-
-//    if(idFilial <= 0)
-//        erro aqui
-
     EstoqueDAO estoqueDAO;
     QList<Estoque *> list = estoqueDAO.recuperEstoque(filtro);
 

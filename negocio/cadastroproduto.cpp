@@ -2,10 +2,11 @@
 #include <QtSql/QSqlDatabase>
 #include <QSqlQuery>
 #include <QVariant>
+#include <QDebug>
+#include <QSqlError>
 
 CadastroProduto::CadastroProduto(QObject* parent) : QObject(parent)
 {
-
 }
 
 int CadastroProduto::getIdProduto() const
@@ -16,7 +17,7 @@ int CadastroProduto::getIdProduto() const
 QString CadastroProduto::getDescricaoProduto(int id) const
 {
     QSqlQuery query;
-    query.prepare("SELECT produto FROM produto where id_produto = (:identificacao);"); //lidar com id depois
+    query.prepare("SELECT produto FROM produto where id_produto = (:identificacao);");
     query.bindValue(":identificacao", id);
     query.exec();
     QString descricaoProduto;
@@ -35,7 +36,6 @@ bool CadastroProduto::inserirDescricaoProduto(const QString &value)
     } else {
         return true;
     }
-    //descricao = value;
 }
 
 QList<Produto *> CadastroProduto::getInformacoesProduto()
@@ -59,17 +59,8 @@ QList<Produto *> CadastroProduto::getInformacoesProduto()
         categoria->setDescCategoria(query.value("categoria").toString());
 
         produto->setCategoria(categoria);
-
-//        produto->setCategoria(categoria);
-
         produtos << produto;
     }
-
-
-//    foreach (Produto* prod, produtos) {
-//        qDebug() << prod->getCategoria()->idCategoria();
-//    }
-
     return produtos;
 }
 
@@ -98,7 +89,6 @@ double CadastroProduto::getValorProduto(int idProduto) const
         valor = query.value("valor").toDouble();
 
     return valor;
-    //return valor;
 }
 
 bool CadastroProduto::defineValorProduto(double preco)
@@ -112,17 +102,6 @@ bool CadastroProduto::defineValorProduto(double preco)
         return false;
     }
     return true;
-//    double valor = preco.toDouble();
-//    QSqlQuery query;
-//    query.prepare("INSERT INTO produto(valor) values (:preco);");
-//    query.bindValue(":preco",valor);
-//    //query.exec();
-//    if (!query.exec()){
-//        return false;
-//    } else {
-//        return true;
-//    }
-    return true;
 }
 
 int CadastroProduto::RetornaIdDoProdutoPelaDescricao(const QString &UsadaParaBuscarIdDoProduto)
@@ -135,4 +114,20 @@ int CadastroProduto::RetornaIdDoProdutoPelaDescricao(const QString &UsadaParaBus
         id = query.value("id_produto").toInt();
 
     return id;
+}
+
+void CadastroProduto::cadastrarNovoProduto(QString descricao, double valor, int id)
+{
+    QSqlQuery query;
+    query.prepare("insert into produto (produto, id_categoria, valor) values "
+                  "('" + descricao + "', (select id_categoria from categoria where id_categoria = (:id)), (:valor));");
+    query.bindValue(":valor", valor);
+    query.bindValue(":id", id);
+    qDebug() << query.executedQuery();
+    if (query.exec()){
+        qDebug() << "deu certo, inseriu";
+    } else {
+        qDebug() << "não inseriu nada";
+    }
+    qDebug() << query.lastError();
 }

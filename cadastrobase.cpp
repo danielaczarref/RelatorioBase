@@ -2,7 +2,6 @@
 
 CadastroBase::CadastroBase(QObject *parent) : QObject(parent)
 {
-
 }
 
 long long CadastroBase::id() const

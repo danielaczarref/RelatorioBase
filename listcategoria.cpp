@@ -73,10 +73,7 @@ void ListCategoria::preencherRelatorioDeCategorias()
 
 void ListCategoria::setConnects()
 {
-    //connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
     connect(ui->tableWidget, SIGNAL(itemDoubleClicked(QTableWidgetItem*)), this, SLOT(clicouProdutoSelecionado(QTableWidgetItem*)));
-    //connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(clicouProdutoSelecionado(QTableWidgetItem*)));
-
 }
 
 QString ListCategoria::getId()
@@ -97,8 +94,6 @@ void ListCategoria::clicouProdutoSelecionado(QTableWidgetItem *item)
         return;
 
     _id = itemId->text();
-
-    qDebug() << "printando pra ver se chegou aqui" ;
     CadastroCategoria* cadastroCategoria;
 
     QVariant value = item->data(QTableWidgetItem::UserType);
@@ -112,5 +107,4 @@ void ListCategoria::clicouProdutoSelecionado(QTableWidgetItem *item)
     }
 
     this->accept();
-    //qDebug() << "print daniel: " << ListCategoria->getDescricaoCategoria();
 }

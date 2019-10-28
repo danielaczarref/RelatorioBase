@@ -2,7 +2,6 @@
 
 Estoque::Estoque(QObject *parent) : QObject(parent)
 {
-
 }
 
 double Estoque::getBasedoProduto() const

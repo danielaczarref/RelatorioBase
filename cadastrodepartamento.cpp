@@ -5,7 +5,6 @@
 
 CadastroDepartamento::CadastroDepartamento(QObject* parent) : QObject(parent)
 {
-
 }
 
 int CadastroDepartamento::getIdDepartamento() const
@@ -35,7 +34,6 @@ bool CadastroDepartamento::defineDescricaoDepartamento(const QString &value)
     } else {
         return true;
     }
-    // descricao = value;
 }
 
 int CadastroDepartamento::buscaIdDoDepartamento(const QString &StringParaBuscarIdDepartamento)

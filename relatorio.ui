@@ -14,70 +14,7 @@
    <string>Relatório de Produtos</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="1" column="0">
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
-      <widget class="QPushButton" name="pbCadastrar">
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>  Cadastrar
-  Produto</string>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>../recursos/editar.png</normaloff>../recursos/editar.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="pbFiltrar">
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>  Filtrar
- Pesquisa</string>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>../recursos/filtro.png</normaloff>../recursos/filtro.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QPushButton" name="pbVoltar">
-       <property name="text">
-        <string>  Voltar
-   Tela</string>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>../recursos/Seta-Azul-Esquerda.png</normaloff>../recursos/Seta-Azul-Esquerda.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
-   </item>
-   <item row="1" column="1">
+   <item row="0" column="1">
     <widget class="QStackedWidget" name="stCadastro">
      <property name="currentIndex">
       <number>0</number>
@@ -202,14 +139,81 @@
      </widget>
     </widget>
    </item>
-   <item row="0" column="0" colspan="2">
-    <widget class="QLabel" name="lbRelatorio">
-     <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;Relatório&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-    </widget>
+   <item row="0" column="0">
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="3" column="0">
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="2" column="0">
+      <widget class="QPushButton" name="pbVoltar">
+       <property name="text">
+        <string>  Voltar
+   Tela</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../recursos/Seta-Azul-Esquerda.png</normaloff>../recursos/Seta-Azul-Esquerda.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="pbFiltrar">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>  Filtrar
+ Pesquisa</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../recursos/filtro.png</normaloff>../recursos/filtro.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="pbCadastrar">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>  Cadastrar
+  Produto</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../recursos/editar.png</normaloff>../recursos/editar.png</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>2</width>
+     <height>2</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_2"/>
+  </widget>
  </widget>
  <resources/>
  <connections/>

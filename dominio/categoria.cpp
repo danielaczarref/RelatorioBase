@@ -2,7 +2,6 @@
 
 Categoria::Categoria(QObject *parent) : QObject(parent)
 {
-
 }
 
 long long Categoria::getIdCategoria() const

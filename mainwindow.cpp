@@ -9,8 +9,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    //Cadastro* telacadastro = new Cadastro();
-    //telacadastro->show();
     Relatorio* relt = new Relatorio;
     relt->show();
 

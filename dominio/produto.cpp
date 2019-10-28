@@ -2,7 +2,6 @@
 
 Produto::Produto(QObject *parent) : QObject(parent)
 {
-
 }
 
 long long Produto::getIdProduto() const

@@ -1,6 +1,8 @@
 #include "cadastrosecao.h"
 #include <QSqlQuery>
 #include <QVariant>
+#include "dominio/secao.h"
+#include "listsecao.h"
 
 CadastroSecao::CadastroSecao(QObject* parent) : QObject(parent)
 {
@@ -10,16 +12,14 @@ CadastroSecao::CadastroSecao(QObject* parent) : QObject(parent)
 int CadastroSecao::getIdSecao() const
 {
     QSqlQuery query;
-    query.prepare("SELECT id_secao FROM secao;"); //resolver id depois;
+    query.prepare("SELECT id_secao FROM secao;");
     query.exec();
-    // return idSecao;
 }
 
 QList<Secao *> CadastroSecao::getInformacoesSecao()
 {
     QList<Secao*> secoes;
     QSqlQuery query;
-    //CadastroSecao* cadSecao = new CadastroSecao;
     query.prepare("select secao.id_secao,secao.secao, secao.id_departamento,"
                   "departamento.descricao from secao, departamento"
                   "where secao.id_departamento = departamento.id_departamento;");
@@ -39,7 +39,7 @@ QList<Secao *> CadastroSecao::getInformacoesSecao()
 QString CadastroSecao::getDescricaoSecao(int id) const
 {
     QSqlQuery query;
-        query.prepare("SELECT secao FROM secao where id_secao = (:identificacao);"); //colocar id dps
+        query.prepare("SELECT secao FROM secao where id_secao = (:identificacao);");
         query.bindValue(":identificacao", id);
         query.exec();
         QString descricaoSecao;

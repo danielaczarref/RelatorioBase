@@ -57,19 +57,8 @@ QList<Estoque *> EstoqueDAO::recuperEstoque(Filtro* filtro)
         sQuery += " and produto.id_produto = (:idProduto) ";
         sQuery.replace("(:idProduto)", QString::number(filtro->getProduto()));
     }
-//    if(idProduto > 0)
-//        "and id_produto = " + QString::number(idProduto);
-    //    ui->stRelatorio->setCurrentIndex(1);
-
-//        CadastroBase* cadastroBase = new CadastroBase;
-//        cadastroBase->setCategoria(ui->lnCategoria->text());
-//        cadastroBase->setProduto(ui->lnProduto->text());
-
     query.prepare(sQuery);
-//    query.bindValue(":idFilial", idFilial);
-//    query.bindValue(":idProduto", idProduto);
     query.exec();
-
     qDebug() << "Erro: " << query.lastError().text();
     qDebug() << "qyert: " << query.executedQuery();
 

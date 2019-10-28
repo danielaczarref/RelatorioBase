@@ -14,6 +14,20 @@ class CadastroParaCada : public QDialog
 public:
     explicit CadastroParaCada(QWidget *parent = 0);
     ~CadastroParaCada();
+private slots:
+    void onpbPesquisarCategoria();
+    void onpbSalvar();
+    bool onleDescricao();
+    bool onleValor();
+    bool onleCategoria();
+    void configuracaoInicial();
+    void setConnects();
+    bool validaString(QString textoInformado);
+    bool validaCampos ();
+    bool VerificaSeEhNumero(QString s);
+
+private slots:
+    void on_pbLimpar_clicked();
 
 private:
     Ui::CadastroParaCada *ui;

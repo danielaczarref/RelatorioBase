@@ -27,6 +27,7 @@ void ListSecao::configuracaoInicial()
 
 void ListSecao::preencherRelatorioSecao()
 {
+
     QList<Secao*> listaSecoes;
     CadastroSecao* cadastroSecao = new CadastroSecao;
 

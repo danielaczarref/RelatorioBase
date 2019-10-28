@@ -35,10 +35,7 @@ Cadastro::Cadastro(QWidget *parent) : QWidget(parent), ui(new Ui::Cadastro)
 {
     ui->setupUi(this);
     configuracaoInicial();
-//    ui->lnFilial->setText("testando filial");
-
     db = QSqlDatabase::addDatabase("QPSQL");
-    //QSqlDatabase db = QSqlDatabase::addDatabase("QPSQL");
     db.setHostName("localhost");
     db.setDatabaseName("estoque");
     db.setUserName("postgres");
@@ -419,12 +416,7 @@ bool Cadastro::verificaCampos()
         QMessageBox::about(this, "Alerta!", "Não é possível filtrar busca sem parâmetros!");
         ui->lnFilial->setFocus();
         return false;
-    } /*else if (ui->lnFilial->text().isEmpty() || ui->lnProduto->text().isEmpty()){
-        QMessageBox::about(this, "Alerta!", "Preenchimento do campos Filial e Produto são obrigatórios!");
-        ui->lnFilial->setFocus();
-        return false;
-    }*/
-
+    }
     return true;
 }
 
@@ -500,17 +492,11 @@ void Cadastro::onbtSalvarclicked()
         filtro->setCategoria(Categoria);
         filtro->setProduto(Produto);
         ListRelatorioBase* listRelatorio = new ListRelatorioBase(filtro);
-        //Relatorio* relatorio = new Relatorio;
         listRelatorio->show();
-        //relatorio->show();
-        //relatorio->preencherRelatorio(filtro);
         ui->stRelatorio->setCurrentIndex(0);
         qDebug() << "Log: usuário salvou a busca/os dados";
     }
-
 }
-
-
 void Cadastro::configuracaoInicial()
 {
      setConnects();

@@ -9,6 +9,7 @@
 #include "negocio/cadastroestoque.h"
 #include "dominio/estoque.h"
 #include "negocio/filtro.h"
+#include "cadastroparacada.h"
 
 const int COLUNA_ID = 0;
 
@@ -103,12 +104,10 @@ void Relatorio::preencherRelatorio(Filtro *filtro)
 
 void Relatorio::onCadastrarProdutoClicked()
 {
-    //ui->stCadastro->setCurrentIndex(0);
-    ui->pbVoltar->setVisible(false);
-
-
+    CadastroParaCada* cad = new CadastroParaCada;
+    ui->pbVoltar->setVisible(true);
+    ui->stCadastro->setCurrentIndex(2);
     qDebug() << "Log: usuário editou pesquisa de relatório";
-
 }
 
 void Relatorio::onFiltrarClicked()
@@ -136,6 +135,9 @@ void Relatorio::configuracaoInicial()
      setConnects();
      Cadastro* cadastro = new Cadastro();
      ui->stCadastro->addWidget(cadastro);
+     CadastroParaCada* cad = new CadastroParaCada;
+     ui->stCadastro->addWidget(cad);
+
      montarTw();
 }
 

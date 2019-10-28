@@ -2,7 +2,6 @@
 
 Secao::Secao(QObject *parent) : QObject(parent)
 {
-
 }
 
 long long Secao::getIdSecao() const

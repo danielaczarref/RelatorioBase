@@ -3,6 +3,8 @@
 #include <QObject>
 #include <QtSql/QSqlDatabase>
 #include <QSqlQuery>
+#include <QList>
+#include "listsecao.h"
 #include "dominio/secao.h"
 
 

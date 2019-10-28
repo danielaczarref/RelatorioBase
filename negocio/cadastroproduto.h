@@ -13,19 +13,15 @@ public:
     explicit CadastroProduto(QObject *parent = nullptr);
     //CadastroProduto();
     int getIdProduto() const;
-
     QString getDescricaoProduto(int id) const;
     bool inserirDescricaoProduto(const QString &value);
     QList<Produto*> getInformacoesProduto();
     bool verificaSeExiste(QString texto);
-
-
     QSqlDatabase db;
-
     double getValorProduto(int idProduto) const;
     bool defineValorProduto(double preco);
-
     int RetornaIdDoProdutoPelaDescricao (const QString &UsadaParaBuscarIdDoProduto);
+    void cadastrarNovoProduto(QString descricao, double valor, int id);
 
 private:
     int id;
